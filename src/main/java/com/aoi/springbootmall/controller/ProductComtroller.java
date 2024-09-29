@@ -16,7 +16,7 @@ public class ProductComtroller {
     private ProductService productService;
 
     @GetMapping("/products/{productId}")
-    public ResponseEntity<Product> getProductBy(@PathVariable Integer productId) {
+    public ResponseEntity<Product> getProductById(@PathVariable Integer productId) {
         Product product = productService.getProductById(productId);
 
         //如果值所找到的數據不為 null 則回傳 200 ok 靜態碼
@@ -36,5 +36,23 @@ public class ProductComtroller {
         Product product = productService.getProductById(productId);
         //新增內容回傳給前端，並返回 201 狀態馬表示新增完成。
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    }
+
+    //productRequest 內的參數允許修改，故沿用。
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
+                                                 @RequestBody @Valid ProductRequest productRequest) {
+        Product product = productService.getProductById(productId);
+        //檢查欲修改商品是否存在
+        if(product != null) {
+            //修改商品數據
+            productService.updateProduct(productId, productRequest);
+            //從資料庫取得更新後的商品數據
+            Product updatedProduct = productService.getProductById(productId);
+            //將修改好的數據回傳給前端
+            return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

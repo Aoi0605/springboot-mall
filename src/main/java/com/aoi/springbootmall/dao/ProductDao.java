@@ -12,4 +12,6 @@ public interface ProductDao {
     Product getProductById(Integer productId);
     //Integer 為返回值
     Integer createProduct(ProductRequest productRequest);
+
+    void updateProduct(Integer productId,ProductRequest productRequest);
 }
