@@ -1,29 +1,37 @@
-package com.aoi.springbootmall.model;
+package com.aoi.springbootmall.dto;
 
 import com.aoi.springbootmall.constant.ProductCategory;
+import jakarta.validation.constraints.NotNull;
 
-import java.sql.Date;
+//這個 class 定義負責接住前端傳來的參數
+public class ProductRequest {
 
-//跟資料庫溝通的實體類 class
-public class Product {
 
-    private Integer productId;
+    //private Integer productId; ID 由資料庫生成，故前端不須傳來
+
+    //加入@NotNull 驗證參數的值
+    @NotNull
     private String productName;
+
+    @NotNull
     private ProductCategory category;
+
+    @NotNull
     private String imageUrl;
+
+    @NotNull
     private Integer price;
+
+    @NotNull
     private Integer stock;
+
     private String description;
-    private Date createData;
-    private Date lastModifiedDate;
 
-    public Integer getProductId() {
-        return productId;
-    }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
+    //讓 springboot 設定即可，故前端不須傳來
+//    private Date createData;
+//    private Date lastModifiedDate;
+
 
     public String getProductName() {
         return productName;
@@ -33,20 +41,20 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public ProductCategory getCategory() {
         return category;
     }
 
     public void setCategory(ProductCategory category) {
         this.category = category;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Integer getPrice() {
@@ -71,21 +79,5 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getCreateData() {
-        return createData;
-    }
-
-    public void setCreateData(Date createData) {
-        this.createData = createData;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 }
