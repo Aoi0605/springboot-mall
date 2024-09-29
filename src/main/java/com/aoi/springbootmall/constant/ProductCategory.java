@@ -1,6 +1,6 @@
 package com.aoi.springbootmall.constant;
 
-//enum 可以血衣些常數固定值
+//enum 可以寫一些常數固定值
 
 public enum ProductCategory {
 
