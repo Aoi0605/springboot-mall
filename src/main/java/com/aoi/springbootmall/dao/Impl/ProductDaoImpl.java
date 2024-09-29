@@ -69,7 +69,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void updateProduct(Integer productId, ProductRequest productRequest) {
+    public void updateProductById(Integer productId, ProductRequest productRequest) {
         //lastModifiedDate 商品修改最後時間，不可忘也。
         String sql = "UPDATE product SET product_name = :productName, category = :category, image_url = :imageUrl," +
                 "price = :price, stock = :stock, description = :description, last_modified_date = :lastModifiedDate " +
@@ -86,6 +86,16 @@ public class ProductDaoImpl implements ProductDao {
         map.put("description", productRequest.getDescription());
 
         map.put("lastModifiedDate", new Date());
+
+        jdbcTemplate.update(sql, map);
+    }
+
+    @Override
+    public void deleteProductById(Integer productId) {
+
+        String sql = "DELETE FROM product WHERE product_id= :productId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
 
         jdbcTemplate.update(sql, map);
     }

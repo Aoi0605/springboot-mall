@@ -46,7 +46,7 @@ public class ProductComtroller {
         //檢查欲修改商品是否存在
         if(product != null) {
             //修改商品數據
-            productService.updateProduct(productId, productRequest);
+            productService.updateProductById(productId, productRequest);
             //從資料庫取得更新後的商品數據
             Product updatedProduct = productService.getProductById(productId);
             //將修改好的數據回傳給前端
@@ -54,5 +54,13 @@ public class ProductComtroller {
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
+        //刪除的 API 不用加上是否有這個商品的判斷，商品只要不存在即可。
+        productService.deleteProductById(productId);
+        //204 NO_CONTENT 表示數據已被刪除。
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
