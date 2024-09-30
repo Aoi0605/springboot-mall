@@ -7,11 +7,18 @@ import com.aoi.springbootmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDao productDao;
+
+    @Override
+    public List<Product> getAllProduct() {
+        return productDao.findAllProduct();
+    }
 
     @Override
     public Product getProductById(Integer productId) {

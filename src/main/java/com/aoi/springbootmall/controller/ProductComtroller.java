@@ -9,11 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ProductComtroller {
 
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> productList = productService.getAllProduct();
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
 
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProductById(@PathVariable Integer productId) {
@@ -44,14 +52,14 @@ public class ProductComtroller {
                                                  @RequestBody @Valid ProductRequest productRequest) {
         Product product = productService.getProductById(productId);
         //檢查欲修改商品是否存在
-        if(product != null) {
+        if (product != null) {
             //修改商品數據
             productService.updateProductById(productId, productRequest);
             //從資料庫取得更新後的商品數據
             Product updatedProduct = productService.getProductById(productId);
             //將修改好的數據回傳給前端
             return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
-        }else {
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
