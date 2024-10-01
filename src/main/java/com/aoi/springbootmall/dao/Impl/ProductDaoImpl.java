@@ -1,5 +1,6 @@
 package com.aoi.springbootmall.dao.Impl;
 
+import com.aoi.springbootmall.constant.ProductCategory;
 import com.aoi.springbootmall.dao.ProductDao;
 import com.aoi.springbootmall.dto.ProductRequest;
 import com.aoi.springbootmall.model.Product;
@@ -23,11 +24,28 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Product> findAllProduct() {
+    public List<Product> findAllProduct(ProductCategory category, String search) {
+        //加上 WHERE 1=1 是為了要讓 " and category=:category" 拼接起來所加的，在 SQL 語法 1=1 是廢話。
+        //如果 category 為 null 則 sql 語句會維持原樣。
         String sql = "select product_id,product_name, category, image_url, price, stock, description," +
-                " created_date, last_modified_date from product";
+                " created_date, last_modified_date from product WHERE 1=1";
 
         Map<String, Object> map = new HashMap<>();
+
+        if(category != null) {
+            //AND 前面一定要加空白鍵
+            sql += " and category=:category";
+            //使用 name() 轉成字串，在加到 map
+            map.put("category", category.name());
+        }
+
+        if (search != null) {
+            //Like 模糊查詢用法，會搭配% %使用，代表任意字符的意思
+            //前後都加上 % 代表關鍵字前後是否有其他字符，都會被查詢出來
+            //不能將 % 寫進 sql 語句，如：%:search%，一定要寫進 map 裡面才可以。
+            sql += " and product_name like :search";
+            map.put("search", "%" + search + "%");
+        }
         List<Product> productList = jdbcTemplate.query(sql, map, new ProductRowMapper());
         return productList;
     }

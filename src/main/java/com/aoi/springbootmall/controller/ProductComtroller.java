@@ -1,5 +1,6 @@
 package com.aoi.springbootmall.controller;
 
+import com.aoi.springbootmall.constant.ProductCategory;
 import com.aoi.springbootmall.dto.ProductRequest;
 import com.aoi.springbootmall.model.Product;
 import com.aoi.springbootmall.service.ProductService;
@@ -17,9 +18,16 @@ public class ProductComtroller {
     @Autowired
     private ProductService productService;
 
+    //查詢商品列表及根據分類查詢
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> productList = productService.getAllProduct();
+    public ResponseEntity<List<Product>> getAllProducts(
+            //從前端接取搜尋結果 enum 值，springboot 會根據 ProductCategory 搜尋相應的 enum
+            //加上(required = false)代表這個參數不是必要，沒有加上則這個方法一定要參數。
+            @RequestParam(required = false) ProductCategory category,
+            //實作輸入搜尋
+            @RequestParam(required = false) String search
+            ) {
+        List<Product> productList = productService.getAllProduct(category, search);
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
