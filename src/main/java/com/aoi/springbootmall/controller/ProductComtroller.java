@@ -26,11 +26,18 @@ public class ProductComtroller {
             //加上(required = false)代表這個參數不是必要，沒有加上則這個方法一定要參數。
             @RequestParam(required = false) ProductCategory category,
             //實作輸入搜尋
-            @RequestParam(required = false) String search
-            ) {
+            @RequestParam(required = false) String search,
+            //不使用 (required = false) 是因為預設都是最新的來排序，設定(defaultValue = "created_date")
+            //代表若是前端沒有傳回參數，預設為 created_date 排序
+            @RequestParam(defaultValue = "created_date") String orderBy,
+            //sort 參數，用來控制升序還是降序，desc 為 sql 語法，降序之意，此預設為降序。
+            @RequestParam(defaultValue = "desc") String sort
+    ) {
         ProductQueryParams params = new ProductQueryParams();
         params.setCategory(category);
         params.setSearch(search);
+        params.setOrderBy(orderBy);
+        params.setSort(sort);
         List<Product> productList = productService.getAllProduct(params);
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
