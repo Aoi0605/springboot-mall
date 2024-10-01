@@ -1,6 +1,7 @@
 package com.aoi.springbootmall.controller;
 
 import com.aoi.springbootmall.constant.ProductCategory;
+import com.aoi.springbootmall.dto.ProductQueryParams;
 import com.aoi.springbootmall.dto.ProductRequest;
 import com.aoi.springbootmall.model.Product;
 import com.aoi.springbootmall.service.ProductService;
@@ -27,7 +28,10 @@ public class ProductComtroller {
             //實作輸入搜尋
             @RequestParam(required = false) String search
             ) {
-        List<Product> productList = productService.getAllProduct(category, search);
+        ProductQueryParams params = new ProductQueryParams();
+        params.setCategory(category);
+        params.setSearch(search);
+        List<Product> productList = productService.getAllProduct(params);
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
