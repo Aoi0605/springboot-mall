@@ -24,6 +24,30 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
+    public Integer countProduct(ProductQueryParams params) {
+
+        String sql = "select count(*) from product WHERE 1=1 ";
+
+        Map<String, Object> map = new HashMap<>();
+
+        if(params.getCategory() != null) {
+            sql += " and category=:category";
+            map.put("category", params.getCategory().name());
+        }
+
+        if (params.getSearch() != null) {
+            sql += " and product_name like :search";
+            map.put("search", "%" + params.getSearch() + "%");
+        }
+
+        //queryForObject() 通常用於取得 count 的值。
+        //Integer.class 表示將 count 的值，轉換成 Integer 類型的值
+        Integer total = jdbcTemplate.queryForObject(sql, map, Integer.class);
+
+        return total;
+    }
+
+    @Override
     public List<Product> findAllProduct(ProductQueryParams params) {
         //加上 WHERE 1=1 是為了要讓 " and category=:category" 拼接起來所加的，在 SQL 語法 1=1 是廢話。
         //如果 category 為 null 則 sql 語句會維持原樣。
