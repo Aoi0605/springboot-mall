@@ -1,6 +1,5 @@
 package com.aoi.springbootmall.dao.Impl;
 
-import com.aoi.springbootmall.constant.ProductCategory;
 import com.aoi.springbootmall.dao.ProductDao;
 import com.aoi.springbootmall.dto.ProductQueryParams;
 import com.aoi.springbootmall.dto.ProductRequest;
@@ -50,6 +49,11 @@ public class ProductDaoImpl implements ProductDao {
         //這部分只能用拼接方式出來 ORDER BY 相關語句，需要用拼接的。
         //拼接 sql 語句，須預留空白鍵。
         sql += " ORDER BY " + params.getOrderBy() + " " + params.getSort();
+
+        //limit and offset 拼接在 ORDER BY 的後面
+        sql += " limit :limit offset :offset ";
+        map.put("limit", params.getLimit());
+        map.put("offset", params.getOffset());
 
         List<Product> productList = jdbcTemplate.query(sql, map, new ProductRowMapper());
         return productList;
