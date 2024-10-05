@@ -30,15 +30,8 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
 
-        if(params.getCategory() != null) {
-            sql += " and category=:category";
-            map.put("category", params.getCategory().name());
-        }
-
-        if (params.getSearch() != null) {
-            sql += " and product_name like :search";
-            map.put("search", "%" + params.getSearch() + "%");
-        }
+        //查詢條件
+        sql = addFilteringSql(sql, map, params);
 
         //queryForObject() 通常用於取得 count 的值。
         //Integer.class 表示將 count 的值，轉換成 Integer 類型的值
@@ -56,20 +49,22 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
 
-        if(params.getCategory() != null) {
-            //AND 前面一定要加空白鍵
-            sql += " and category=:category";
-            //使用 name() 轉成字串，在加到 map
-            map.put("category", params.getCategory().name());
-        }
+        sql = addFilteringSql(sql, map, params);
 
-        if (params.getSearch() != null) {
-            //Like 模糊查詢用法，會搭配% %使用，代表任意字符的意思
-            //前後都加上 % 代表關鍵字前後是否有其他字符，都會被查詢出來
-            //不能將 % 寫進 sql 語句，如：%:search%，一定要寫進 map 裡面才可以。
-            sql += " and product_name like :search";
-            map.put("search", "%" + params.getSearch() + "%");
-        }
+//        if(params.getCategory() != null) {
+//            //AND 前面一定要加空白鍵
+//            sql += " and category=:category";
+//            //使用 name() 轉成字串，在加到 map
+//            map.put("category", params.getCategory().name());
+//        }
+//
+//        if (params.getSearch() != null) {
+//            //Like 模糊查詢用法，會搭配% %使用，代表任意字符的意思
+//            //前後都加上 % 代表關鍵字前後是否有其他字符，都會被查詢出來
+//            //不能將 % 寫進 sql 語句，如：%:search%，一定要寫進 map 裡面才可以。
+//            sql += " and product_name like :search";
+//            map.put("search", "%" + params.getSearch() + "%");
+//        }
         //這部分只能用拼接方式出來 ORDER BY 相關語句，需要用拼接的。
         //拼接 sql 語句，須預留空白鍵。
         sql += " ORDER BY " + params.getOrderBy() + " " + params.getSort();
@@ -159,5 +154,19 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productId", productId);
 
         jdbcTemplate.update(sql, map);
+    }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams params){
+        if(params.getCategory() != null) {
+            sql += " and category=:category";
+            map.put("category", params.getCategory().name());
+        }
+
+        if (params.getSearch() != null) {
+            sql += " and product_name like :search";
+            map.put("search", "%" + params.getSearch() + "%");
+        }
+
+        return sql;
     }
 }
