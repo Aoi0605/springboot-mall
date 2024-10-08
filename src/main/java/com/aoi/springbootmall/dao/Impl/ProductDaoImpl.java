@@ -51,20 +51,6 @@ public class ProductDaoImpl implements ProductDao {
 
         sql = addFilteringSql(sql, map, params);
 
-//        if(params.getCategory() != null) {
-//            //AND 前面一定要加空白鍵
-//            sql += " and category=:category";
-//            //使用 name() 轉成字串，在加到 map
-//            map.put("category", params.getCategory().name());
-//        }
-//
-//        if (params.getSearch() != null) {
-//            //Like 模糊查詢用法，會搭配% %使用，代表任意字符的意思
-//            //前後都加上 % 代表關鍵字前後是否有其他字符，都會被查詢出來
-//            //不能將 % 寫進 sql 語句，如：%:search%，一定要寫進 map 裡面才可以。
-//            sql += " and product_name like :search";
-//            map.put("search", "%" + params.getSearch() + "%");
-//        }
         //這部分只能用拼接方式出來 ORDER BY 相關語句，需要用拼接的。
         //拼接 sql 語句，須預留空白鍵。
         sql += " ORDER BY " + params.getOrderBy() + " " + params.getSort();
@@ -156,6 +142,7 @@ public class ProductDaoImpl implements ProductDao {
         jdbcTemplate.update(sql, map);
     }
 
+    //將 findAllProduct() and getProductById() 當中兩個相同的 if 判斷式擷取出來，讓程式重複利用並提升維護。
     private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams params){
         if(params.getCategory() != null) {
             sql += " and category=:category";

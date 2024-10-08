@@ -60,42 +60,6 @@ public class ProductComtroller {
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
-
-
-    //查詢商品列表及根據分類查詢(僅回傳商品數據)
-//    @GetMapping("/products")
-//    public ResponseEntity<List<Product>> getAllProducts(
-//            //從前端接取搜尋結果 enum 值，springboot 會根據 ProductCategory 搜尋相應的 enum
-//            //加上(required = false)代表這個參數不是必要，沒有加上則這個方法一定要參數。
-//            @RequestParam(required = false) ProductCategory category,
-//
-//            //實作輸入搜尋
-//            @RequestParam(required = false) String search,
-//            //不使用 (required = false) 是因為預設都是最新的來排序，設定(defaultValue = "created_date")
-//            //代表若是前端沒有傳回參數，預設為 created_date 排序
-//            @RequestParam(defaultValue = "created_date") String orderBy,
-//            //sort 參數，用來控制升序還是降序，desc 為 sql 語法，降序之意，此預設為降序。
-//            @RequestParam(defaultValue = "desc") String sort,
-//
-//            //分頁
-//            //limit and offset 與 sql 語法有關，這可以節省資料庫效能，不一次取得太多數據，以此為例預設只取出5筆數據
-//            //limit 表示要取得幾筆商品數據，這邊設定預設為5，代表只取出5筆數據
-//            //@Max 前端傳進來的數據最大不超過1000，最小為0避免傳負數
-//            @RequestParam(defaultValue = "5" ) @Max(1000) @Min(0) Integer limit,
-//            //表示要跳過多少筆數據，這邊預設為0代表不跳過任何一筆數據。
-//            @RequestParam(defaultValue = "0" ) @Min(0) Integer offset
-//    ) {
-//        ProductQueryParams params = new ProductQueryParams();
-//        params.setCategory(category);
-//        params.setSearch(search);
-//        params.setOrderBy(orderBy);
-//        params.setSort(sort);
-//        params.setLimit(limit);
-//        params.setOffset(offset);
-//        List<Product> productList = productService.getAllProduct(params);
-//        return new ResponseEntity<>(productList, HttpStatus.OK);
-//    }
-
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProductById(@PathVariable Integer productId) {
         Product product = productService.getProductById(productId);
