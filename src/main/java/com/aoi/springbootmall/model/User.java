@@ -1,11 +1,15 @@
 package com.aoi.springbootmall.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Date;
 
 public class User {
 
     Integer user_id;
     String email;
+
+    @JsonIgnore //在轉換 Object 變數時，會忽略這個變數
     String password;
     Date created_date;
     Date lastModifiedDate;

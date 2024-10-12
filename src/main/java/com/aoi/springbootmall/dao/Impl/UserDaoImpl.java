@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Integer createUser(UserRegisterRequest userRegisterRequest) {
-        String sql = "INSERT INTO user(email, password, created_date, last_modified_date)" +
+        String sql = "INSERT INTO `user`(email, password, created_date, last_modified_date)" +
                 " VALUES (:email, :password, :created_date, :last_modified_date)";
 
         Map map = new HashMap();
@@ -42,6 +42,24 @@ public class UserDaoImpl implements UserDao {
         int userId = keyHoldery.getKey().intValue();
 
         return userId;
+    }
+
+    @Override
+    public User getUserByEmail(UserRegisterRequest userRegisterRequest) {
+        String sql = "SELECT user_id, email, password, created_date, last_modified_date " +
+                "FROM `user` " +
+                "WHERE email = :email";
+
+        Map map = new HashMap();
+        map.put("email", userRegisterRequest.getEmail());
+
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+
+        if(userList.size() > 0){
+            return userList.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override
