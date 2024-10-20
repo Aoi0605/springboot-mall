@@ -6,7 +6,7 @@ import java.sql.Date;
 
 public class User {
 
-    Integer user_id;
+    Integer userId;
     String email;
 
     @JsonIgnore //在轉換 Object 變數時，會忽略這個變數
@@ -14,12 +14,12 @@ public class User {
     Date created_date;
     Date lastModifiedDate;
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {

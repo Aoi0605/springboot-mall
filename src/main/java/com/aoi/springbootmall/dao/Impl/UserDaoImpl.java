@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "INSERT INTO `user`(email, password, created_date, last_modified_date)" +
                 " VALUES (:email, :password, :created_date, :last_modified_date)";
 
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("email", userRegisterRequest.getEmail());
         map.put("password", userRegisterRequest.getPassword());
 
@@ -45,13 +45,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserByEmail(UserRegisterRequest userRegisterRequest) {
+    public User getUserByEmail(String email) {
         String sql = "SELECT user_id, email, password, created_date, last_modified_date " +
                 "FROM `user` " +
                 "WHERE email = :email";
 
-        Map map = new HashMap();
-        map.put("email", userRegisterRequest.getEmail());
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
 
         List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
 
@@ -65,9 +65,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserById(Integer userId) {
         String sql = "select user_id, email, password, created_date, last_modified_date " +
-                "from `user` where user_id = :user_id";
+                "from `user` " +
+                "where user_id = :user_id";
 
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("user_id", userId);
 
         List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
