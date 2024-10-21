@@ -67,6 +67,5 @@ public class UserServiceImpl implements UserService {
             log.warn("email {} 的密碼不正確", userLoginRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST); //強制停止請求
         }
-
     }
 }
