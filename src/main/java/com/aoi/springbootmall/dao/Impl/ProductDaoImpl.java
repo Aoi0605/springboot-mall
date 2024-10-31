@@ -22,6 +22,8 @@ public class ProductDaoImpl implements ProductDao {
 
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
     public Integer countProduct(ProductQueryParams params) {
@@ -130,6 +132,18 @@ public class ProductDaoImpl implements ProductDao {
         map.put("lastModifiedDate", new Date());
 
         jdbcTemplate.update(sql, map);
+    }
+
+    @Override
+    public void updateStock(Integer productId, Integer stock) {
+        String sql = "UPDATE product SET stock = :stock, last_modified_date = :last_modified_date " +
+                "WHERE product_id= :product_id";
+        Map<String, Object> map = new HashMap<>();
+        map.put("product_id", productId);
+        map.put("stock", stock);
+        map.put("last_modified_date", new Date());
+
+        namedParameterJdbcTemplate.update(sql, map);
     }
 
     @Override

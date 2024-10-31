@@ -19,5 +19,7 @@ public interface ProductDao {
 
     void updateProductById(Integer productId,ProductRequest productRequest);
 
+    void updateStock(Integer productId, Integer stock); // stock 這個 stock 為更新過後的數據
+
     void deleteProductById(Integer productId);
 }
