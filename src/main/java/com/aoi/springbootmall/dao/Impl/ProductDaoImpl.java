@@ -46,7 +46,7 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> findAllProduct(ProductQueryParams params) {
         //加上 WHERE 1=1 是為了要讓 " and category=:category" 拼接起來所加的，在 SQL 語法 1=1 是廢話。
         //如果 category 為 null 則 sql 語句會維持原樣。
-        String sql = "select product_id,product_name, category, image_url, price, stock, description," +
+        String sql = "select product_id, product_name, category, image_url, price, stock, description," +
                 " created_date, last_modified_date from product WHERE 1=1";
 
         Map<String, Object> map = new HashMap<>();
